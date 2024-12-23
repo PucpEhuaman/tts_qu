@@ -1,0 +1,130 @@
+import React, { useState } from 'react';
+import { Card, CardContent } from '@/components/ui/card';
+import { Play, Pause, MusicIcon } from 'lucide-react';
+
+const TTSResults = () => {
+  const models = [
+    { 
+      id: 'tacotron2',
+      name: 'Tacotron2 + WaveNet'
+    },
+    {
+      id: 'fastpitch',
+      name: 'FastPitch + WaveGlow'
+    },
+    {
+      id: 'vits',
+      name: 'VITS'
+    },
+    {
+      id: 'xtts',
+      name: 'XTTS v2'
+    }
+  ];
+
+  const AudioPlayer = ({ title, audioUrl }) => {
+    const [isPlaying, setIsPlaying] = useState(false);
+    const audioRef = React.useRef(null);
+
+    const togglePlay = () => {
+      if (audioRef.current.paused) {
+        audioRef.current.play();
+        setIsPlaying(true);
+      } else {
+        audioRef.current.pause();
+        setIsPlaying(false);
+      }
+    };
+
+    return (
+      <div className="flex flex-col space-y-2 w-full">
+        <div className="flex items-center justify-between">
+          <span className="text-sm font-medium">{title}</span>
+          <button
+            onClick={togglePlay}
+            className="p-2 rounded-full hover:bg-gray-100"
+          >
+            {isPlaying ? (
+              <Pause className="h-5 w-5" />
+            ) : (
+              <Play className="h-5 w-5" />
+            )}
+          </button>
+        </div>
+        <audio
+          ref={audioRef}
+          src={audioUrl}
+          onEnded={() => setIsPlaying(false)}
+          className="w-full"
+          controls
+        />
+      </div>
+    );
+  };
+
+  return (
+    <div className="container mx-auto p-4">
+      <h1 className="text-3xl font-bold mb-8 text-center">Comparación de Modelos TTS</h1>
+      
+      <div className="overflow-x-auto">
+        <table className="w-full min-w-[1024px] table-fixed">
+          <thead>
+            <tr className="border-b">
+              <th className="w-48 p-4 text-left font-semibold">Modelo</th>
+              <th className="p-4 text-center font-semibold" colSpan={2}>Muestra 1</th>
+              <th className="p-4 text-center font-semibold" colSpan={2}>Muestra 2</th>
+              <th className="p-4 text-center font-semibold" colSpan={2}>Muestra 3</th>
+            </tr>
+            <tr className="border-b bg-gray-50">
+              <th className="p-2"></th>
+              {[1, 2, 3].map(sampleNum => (
+                <React.Fragment key={sampleNum}>
+                  <th className="w-40 p-2 text-sm font-medium">Original</th>
+                  <th className="w-40 p-2 text-sm font-medium">TTS</th>
+                </React.Fragment>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            {models.map((model, index) => (
+              <tr key={model.id} className={index % 2 === 0 ? 'bg-white' : 'bg-gray-50'}>
+                <td className="p-4">
+                  <div className="flex items-center gap-2">
+                    <MusicIcon className="h-5 w-5" />
+                    <span className="font-medium">{model.name}</span>
+                  </div>
+                </td>
+                {[1, 2, 3].map(sampleNum => (
+                  <React.Fragment key={sampleNum}>
+                    <td className="p-4">
+                      <div className="w-40">
+                        <AudioPlayer
+                          title={`Original ${sampleNum}`}
+                          audioUrl={`/path/to/original_sample${sampleNum}.wav`}
+                        />
+                      </div>
+                    </td>
+                    <td className="p-4">
+                      <div className="w-40">
+                        <AudioPlayer
+                          title={`${model.name} ${sampleNum}`}
+                          audioUrl={`/path/to/${model.id}_sample${sampleNum}.wav`}
+                        />
+                      </div>
+                    </td>
+                  </React.Fragment>
+                ))}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+
+      <div className="mt-6 text-sm text-gray-600">
+        <p>* Desliza horizontalmente para ver todas las muestras en dispositivos móviles</p>
+      </div>
+    </div>
+  );
+};
+
+export default TTSResults;
