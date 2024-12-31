@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Comparación de Modelos TTS</title>
+    <title>Evaluacion de Modelos TTS - QUECHUA</title>
     <style>
         * {
             box-sizing: border-box;
@@ -35,29 +35,20 @@
 
         table {
             width: 100%;
-            min-width: 1024px;
+            min-width: 800px; /* Ajustado para reflejar menos columnas */
             border-collapse: collapse;
             table-layout: fixed;
         }
 
         th, td {
             padding: 1rem;
-            text-align: left;
+            text-align: center; /* Centrar el contenido */
             border-bottom: 1px solid #eee;
         }
 
         th {
             background-color: #f8f9fa;
             font-weight: bold;
-        }
-
-        .model-name {
-            width: 200px;
-            font-weight: bold;
-        }
-
-        .audio-cell {
-            width: 250px;
         }
 
         .audio-container {
@@ -79,10 +70,15 @@
             background-color: #f8f9fa;
         }
 
+        /* Estilo para la fila destacada */
+        tr.highlight {
+            background-color: #ffeeba !important; /* Color amarillo claro con mayor especificidad */
+        }
+
         .scroll-notice {
             margin-top: 1rem;
             color: #666;
-            font-size: 0.9rem;
+            font-size: 1.5rem;
             text-align: center;
         }
 
@@ -91,29 +87,29 @@
                 border-radius: 0;
                 padding: 0.5rem;
             }
+
+            th, td {
+                padding: 0.5rem;
+            }
         }
     </style>
 </head>
 <body>
-    <h1>Comparación de Modelos TTS</h1>
-    
+    <h1>Evaluacion de Modelos TTS - QUECHUA</h1>
+    <p class="scroll-notice">Por favor llena tu evaluacion
+		<a href="https://docs.google.com/forms/d/e/1FAIpQLSee9CQFqi2tmdMOFTKPMOLyV0Qa6uI973Pba-LgXaMbiI7GTQ/viewform?usp=dialog" target="_blank" rel="noopener noreferrer">aquí</a> 
+	</p>
     <div class="container">
         <table id="ttsTable">
             <thead>
                 <tr>
-                    <th class="model-name">Modelo</th>
-                    <th colspan="2">Muestra 1</th>
-                    <th colspan="2">Muestra 2</th>
-                    <th colspan="2">Muestra 3</th>
-                </tr>
-                <tr>
-                    <th></th>
+                    <th>Muestra</th>
                     <th>Original</th>
-                    <th>TTS</th>
-                    <th>Original</th>
-                    <th>TTS</th>
-                    <th>Original</th>
-                    <th>TTS</th>
+                    <th>Tacotron2 + WaveNet</th>
+                    <th>FastPitch + WaveGlow</th>
+                    <th>VITS</th>
+                    <th>XTTS v2</th>
+                    <th>ElevenLabs (privado)</th>
                 </tr>
             </thead>
             <tbody id="ttsTableBody">
@@ -127,7 +123,7 @@
     <script>
         // Configuración base
         const config = {
-            baseUrl: '/audios/', // Ruta base para los archivos de audio
+            baseUrl: 'audio/', // Ruta base para los archivos de audio
             models: [
                 {
                     name: 'Tacotron2 + WaveNet',
@@ -144,44 +140,100 @@
                 {
                     name: 'XTTS v2',
                     id: 'xtts'
+                },
+                {
+                    name: 'ElevenLabs',
+                    id: 'eleven'
                 }
             ],
-            samples: 3 // Número de muestras por modelo
+            samples: [ // Lista de samples
+                {
+                    title: '16 CONSTITUCION-3',
+                    original: 'original/16 CONSTITUCION-3.wav',
+                    tacotron: 'tacotron/16 CONSTITUCION-3.wav',
+                    fastpitch: 'fastpitch/16 CONSTITUCION-3.wav',
+                    vits: 'vits/16 CONSTITUCION-3.wav',
+                    xtts: 'xtts/16 CONSTITUCION-3.wav',
+                    eleven: 'eleven/16 CONSTITUCION-3.wav'
+                },
+                {
+                    title: '12 ISIDORA AHORRADORA-37',
+                    original: 'original/12 ISIDORA AHORRADORA-37.wav',
+                    tacotron: 'tacotron/12 ISIDORA AHORRADORA-37.wav',
+                    fastpitch: 'fastpitch/12 ISIDORA AHORRADORA-37.wav',
+                    vits: 'vits/12 ISIDORA AHORRADORA-37.wav',
+                    xtts: 'xtts/12 ISIDORA AHORRADORA-37.wav',
+                    eleven: '' // No hay audio para ElevenLabs
+                },
+                {
+                    title: '15 NARRA MINEDU-132',
+                    original: 'original/15 NARRA MINEDU-132.wav',
+                    tacotron: 'tacotron/15 NARRA MINEDU-132.wav',
+                    fastpitch: 'fastpitch/15 NARRA MINEDU-132.wav',
+                    vits: 'vits/15 NARRA MINEDU-132.wav',
+                    xtts: 'xtts/15 NARRA MINEDU-132.wav',
+                    eleven: '' // No hay audio para ElevenLabs
+                },
+                {
+                    title: 'mujer-1',
+                    original: 'original/mujer1.wav',
+                    tacotron: 'tacotron/mujer1.wav',
+                    fastpitch: 'fastpitch/mujer1.wav',
+                    vits: 'vits/mujer1.wav',
+                    xtts: 'xtts/mujer1.wav',
+                    eleven: '' // No hay audio para ElevenLabs
+                },
+                // Agrega más samples aquí según sea necesario
+                {
+                    title: 'El sueño del Pongo Jose Maria Arguedas',
+                    original: 'original/JMA_pongodream.wav',
+                    tacotron: '',
+                    fastpitch: '',
+                    vits: '',
+                    xtts: 'xtts/JMA_pongodream.wav',
+                    eleven: ''
+                }
+            ]
         };
 
+        // Función para crear una celda de audio
         function createAudioCell(title, audioPath) {
+            if (!audioPath) { // Verificar si la ruta del audio está definida y no está vacía
+                return '';
+            }
             return `
                 <div class="audio-container">
                     <span class="audio-title">${title}</span>
-                    <audio controls src="${config.baseUrl}${audioPath}"></audio>
+                    <audio controls src="${config.baseUrl}${audioPath}" onerror="this.parentElement.style.display='none';"></audio>
                 </div>
             `;
         }
 
+        // Función para generar la tabla
         function generateTable() {
             const tbody = document.getElementById('ttsTableBody');
             
-            config.models.forEach(model => {
-                let row = '<tr>';
-                row += `<td class="model-name">${model.name}</td>`;
+            config.samples.forEach((sample, index) => {
+                // Determinar si es la última fila para resaltar
+                const isLastRow = index === config.samples.length - 1;
+                const rowClass = isLastRow ? 'highlight' : '';
                 
-                for (let i = 1; i <= config.samples; i++) {
-                    // Celda del audio original
-                    row += `<td class="audio-cell">
-                        ${createAudioCell(
-                            `Original ${i}`,
-                            `original/sample${i}.wav`
-                        )}
+                let row = `<tr class="${rowClass}">`;
+                
+                // Columna de la muestra
+                row += `<td>${sample.title}</td>`;
+                
+                // Columna del audio original
+                row += `<td>
+                    ${createAudioCell('Original', sample.original)}
+                </td>`;
+                
+                // Columnas de los audios generados por cada modelo
+                config.models.forEach(model => {
+                    row += `<td>
+                        ${createAudioCell(model.name, sample[model.id])}
                     </td>`;
-                    
-                    // Celda del audio generado
-                    row += `<td class="audio-cell">
-                        ${createAudioCell(
-                            `${model.name} ${i}`,
-                            `${model.id}/sample${i}.wav`
-                        )}
-                    </td>`;
-                }
+                });
                 
                 row += '</tr>';
                 tbody.innerHTML += row;
