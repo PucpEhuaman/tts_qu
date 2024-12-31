@@ -98,7 +98,7 @@
     <h1>Comparación de Modelos TTS</h1>
     
     <div class="container">
-        <table>
+        <table id="ttsTable">
             <thead>
                 <tr>
                     <th class="model-name">Modelo</th>
@@ -116,168 +116,80 @@
                     <th>TTS</th>
                 </tr>
             </thead>
-            <tbody>
-                <tr>
-                    <td class="model-name">Tacotron2 + WaveNet</td>
-                    <td class="audio-cell">
-                        <div class="audio-container">
-                            <span class="audio-title">Original 1</span>
-                            <audio controls src="/path/to/original1.wav"></audio>
-                        </div>
-                    </td>
-                    <td class="audio-cell">
-                        <div class="audio-container">
-                            <span class="audio-title">Tacotron2 1</span>
-                            <audio controls src="/path/to/tacotron_1.wav"></audio>
-                        </div>
-                    </td>
-                    <td class="audio-cell">
-                        <div class="audio-container">
-                            <span class="audio-title">Original 2</span>
-                            <audio controls src="/path/to/original2.wav"></audio>
-                        </div>
-                    </td>
-                    <td class="audio-cell">
-                        <div class="audio-container">
-                            <span class="audio-title">Tacotron2 2</span>
-                            <audio controls src="/path/to/tacotron_2.wav"></audio>
-                        </div>
-                    </td>
-                    <td class="audio-cell">
-                        <div class="audio-container">
-                            <span class="audio-title">Original 3</span>
-                            <audio controls src="/path/to/original3.wav"></audio>
-                        </div>
-                    </td>
-                    <td class="audio-cell">
-                        <div class="audio-container">
-                            <span class="audio-title">Tacotron2 3</span>
-                            <audio controls src="/path/to/tacotron_3.wav"></audio>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="model-name">FastPitch + WaveGlow</td>
-                    <td class="audio-cell">
-                        <div class="audio-container">
-                            <span class="audio-title">Original 1</span>
-                            <audio controls src="/path/to/original1.wav"></audio>
-                        </div>
-                    </td>
-                    <td class="audio-cell">
-                        <div class="audio-container">
-                            <span class="audio-title">FastPitch 1</span>
-                            <audio controls src="/path/to/fastpitch_1.wav"></audio>
-                        </div>
-                    </td>
-                    <td class="audio-cell">
-                        <div class="audio-container">
-                            <span class="audio-title">Original 2</span>
-                            <audio controls src="/path/to/original2.wav"></audio>
-                        </div>
-                    </td>
-                    <td class="audio-cell">
-                        <div class="audio-container">
-                            <span class="audio-title">FastPitch 2</span>
-                            <audio controls src="/path/to/fastpitch_2.wav"></audio>
-                        </div>
-                    </td>
-                    <td class="audio-cell">
-                        <div class="audio-container">
-                            <span class="audio-title">Original 3</span>
-                            <audio controls src="/path/to/original3.wav"></audio>
-                        </div>
-                    </td>
-                    <td class="audio-cell">
-                        <div class="audio-container">
-                            <span class="audio-title">FastPitch 3</span>
-                            <audio controls src="/path/to/fastpitch_3.wav"></audio>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="model-name">VITS</td>
-                    <td class="audio-cell">
-                        <div class="audio-container">
-                            <span class="audio-title">Original 1</span>
-                            <audio controls src="/path/to/original1.wav"></audio>
-                        </div>
-                    </td>
-                    <td class="audio-cell">
-                        <div class="audio-container">
-                            <span class="audio-title">VITS 1</span>
-                            <audio controls src="/path/to/vits_1.wav"></audio>
-                        </div>
-                    </td>
-                    <td class="audio-cell">
-                        <div class="audio-container">
-                            <span class="audio-title">Original 2</span>
-                            <audio controls src="/path/to/original2.wav"></audio>
-                        </div>
-                    </td>
-                    <td class="audio-cell">
-                        <div class="audio-container">
-                            <span class="audio-title">VITS 2</span>
-                            <audio controls src="/path/to/vits_2.wav"></audio>
-                        </div>
-                    </td>
-                    <td class="audio-cell">
-                        <div class="audio-container">
-                            <span class="audio-title">Original 3</span>
-                            <audio controls src="/path/to/original3.wav"></audio>
-                        </div>
-                    </td>
-                    <td class="audio-cell">
-                        <div class="audio-container">
-                            <span class="audio-title">VITS 3</span>
-                            <audio controls src="/path/to/vits_3.wav"></audio>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="model-name">XTTS v2</td>
-                    <td class="audio-cell">
-                        <div class="audio-container">
-                            <span class="audio-title">Original 1</span>
-                            <audio controls src="/path/to/original1.wav"></audio>
-                        </div>
-                    </td>
-                    <td class="audio-cell">
-                        <div class="audio-container">
-                            <span class="audio-title">XTTS 1</span>
-                            <audio controls src="/path/to/xtts_1.wav"></audio>
-                        </div>
-                    </td>
-                    <td class="audio-cell">
-                        <div class="audio-container">
-                            <span class="audio-title">Original 2</span>
-                            <audio controls src="/path/to/original2.wav"></audio>
-                        </div>
-                    </td>
-                    <td class="audio-cell">
-                        <div class="audio-container">
-                            <span class="audio-title">XTTS 2</span>
-                            <audio controls src="/path/to/xtts_2.wav"></audio>
-                        </div>
-                    </td>
-                    <td class="audio-cell">
-                        <div class="audio-container">
-                            <span class="audio-title">Original 3</span>
-                            <audio controls src="/path/to/original3.wav"></audio>
-                        </div>
-                    </td>
-                    <td class="audio-cell">
-                        <div class="audio-container">
-                            <span class="audio-title">XTTS 3</span>
-                            <audio controls src="/path/to/xtts_3.wav"></audio>
-                        </div>
-                    </td>
-                </tr>
+            <tbody id="ttsTableBody">
+                <!-- La tabla se llenará con JavaScript -->
             </tbody>
         </table>
     </div>
     
     <p class="scroll-notice">* Desliza horizontalmente para ver todas las muestras en dispositivos móviles</p>
 
+    <script>
+        // Configuración base
+        const config = {
+            baseUrl: '/audios/', // Ruta base para los archivos de audio
+            models: [
+                {
+                    name: 'Tacotron2 + WaveNet',
+                    id: 'tacotron'
+                },
+                {
+                    name: 'FastPitch + WaveGlow',
+                    id: 'fastpitch'
+                },
+                {
+                    name: 'VITS',
+                    id: 'vits'
+                },
+                {
+                    name: 'XTTS v2',
+                    id: 'xtts'
+                }
+            ],
+            samples: 3 // Número de muestras por modelo
+        };
+
+        function createAudioCell(title, audioPath) {
+            return `
+                <div class="audio-container">
+                    <span class="audio-title">${title}</span>
+                    <audio controls src="${config.baseUrl}${audioPath}"></audio>
+                </div>
+            `;
+        }
+
+        function generateTable() {
+            const tbody = document.getElementById('ttsTableBody');
+            
+            config.models.forEach(model => {
+                let row = '<tr>';
+                row += `<td class="model-name">${model.name}</td>`;
+                
+                for (let i = 1; i <= config.samples; i++) {
+                    // Celda del audio original
+                    row += `<td class="audio-cell">
+                        ${createAudioCell(
+                            `Original ${i}`,
+                            `original/sample${i}.wav`
+                        )}
+                    </td>`;
+                    
+                    // Celda del audio generado
+                    row += `<td class="audio-cell">
+                        ${createAudioCell(
+                            `${model.name} ${i}`,
+                            `${model.id}/sample${i}.wav`
+                        )}
+                    </td>`;
+                }
+                
+                row += '</tr>';
+                tbody.innerHTML += row;
+            });
+        }
+
+        // Generar la tabla cuando la página cargue
+        document.addEventListener('DOMContentLoaded', generateTable);
+    </script>
 </body>
 </html>
