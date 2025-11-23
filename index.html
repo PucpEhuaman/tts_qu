@@ -72,7 +72,7 @@
 
         /* Estilo para la fila destacada */
         tr.highlight {
-            background-color: #ffeeba !important; /* Color amarillo claro con mayor especificidad */
+            //background-color: #ffeeba !important; /* Color amarillo claro con mayor especificidad */
         }
 
         .scroll-notice {
@@ -105,7 +105,7 @@
                 <tr>
                     <th>Nombre</th>
                     <th>Audio Original</th>
-                    <th>Modelo 1: Tacotron</th>
+                    <!-- <th>Modelo 1: Tacotron</th> -->
                     <th>Modelo 2: FastPitch</th>
                     <th>Modelo 3: VITS</th>
                     <th>Modelo 4: XTTS</th>
@@ -124,14 +124,14 @@
         const config = {
             baseUrl: 'audio/', // Ruta base para los archivos de audio
             models: [
+//                {
+//                    name: 'Tacotron2 + WaveNet',
+//                  id: 'tacotron'
+//                },
                 {
-                    name: 'Tacotron2 + WaveNet',
-                    id: 'tacotron'
-                },
-                {
-                    name: 'FastPitch + WaveGlow',
+                   name: 'FastPitch + WaveGlow',
                     id: 'fastpitch'
-                },
+                }, 
                 {
                     name: 'VITS',
                     id: 'vits'
