@@ -5,14 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>El Sueño del Pongo - José María Arguedas</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
-            font-family: 'Arial Black', 'Arial Bold', Gadget, sans-serif;
+            font-family: 'Arial', sans-serif;
             background: #ffffff;
             min-height: 100vh;
             display: flex;
@@ -22,244 +18,320 @@
         }
 
         .container {
-            background: transparent;
-            max-width: 900px;
+            max-width: 960px;
             width: 100%;
-        }
-
-        .content {
             display: flex;
-            align-items: center;
-            padding: 50px;
-            gap: 50px;
+            gap: 40px;
+            align-items: flex-start;
         }
 
         .image-section {
-            flex: 1;
             display: flex;
             flex-direction: column;
             align-items: center;
+            gap: 12px;
+            flex-shrink: 0;
+            width: 200px;
         }
 
-        .portrait {
-            width: 300px;
-            height: 400px;
+        .portrait-wrap {
+            width: 200px;
+            height: 260px;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 2px solid #e0e0e0;
+        }
+
+        .portrait-wrap img {
+            width: 100%;
+            height: 100%;
             object-fit: cover;
             display: block;
         }
 
-        .name {
-            font-size: 32px;
-            font-weight: 900;
+        .author-name {
+            font-size: 13px;
+            font-weight: 700;
             color: #001f54;
             text-align: center;
-            letter-spacing: 1px;
+            letter-spacing: 2px;
             text-transform: uppercase;
+        }
+
+        .quechua-text {
+            font-size: 11px;
+            color: rgba(0,0,0,0.45);
+            text-align: left;
+            line-height: 1.7;
+            font-style: italic;
+            width: 100%;
         }
 
         .audio-section {
             flex: 1;
             display: flex;
             flex-direction: column;
-            gap: 40px;
+            gap: 10px;
         }
 
-        .title {
-            font-size: 28px;
+        .section-title {
+            font-size: 20px;
             font-weight: 900;
-            color: #dc143c;
-            text-align: center;
-            margin-bottom: 20px;
-            letter-spacing: 1px;
+            color: #e8354a;
+            margin-bottom: 6px;
+            letter-spacing: 0.5px;
+        }
+
+        .section-subtitle {
+            font-size: 12px;
+            color: rgba(0,0,0,0.45);
+            margin-bottom: 4px;
+            font-style: italic;
         }
 
         .audio-card {
-            background: transparent;
-            padding: 20px 0;
-            border-radius: 0;
-            box-shadow: none;
-            transition: transform 0.3s ease;
-            border-bottom: 2px solid #f0f0f0;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 14px 18px;
+            border-radius: 10px;
+            border: 1px solid #e8e8e8;
+            background: #f9f9f9;
+            transition: background 0.2s, border-color 0.2s;
+            cursor: pointer;
         }
 
-        .audio-card:last-child {
-            border-bottom: none;
-        }
+        .audio-card:hover  { background: #f0f0f0; border-color: #cccccc; }
+        .audio-card.active { border-color: #bbbbbb; background: #efefef; }
 
-        .audio-card:hover {
-            transform: none;
-            box-shadow: none;
-        }
-
-        .audio-card h3 {
-            color: #001f54;
-            font-size: 20px;
-            font-weight: 900;
-            margin-bottom: 5px;
-            text-transform: none;
-        }
-
-        .audio-card p {
-            color: #666;
-            font-size: 14px;
-            font-weight: normal;
-            margin-bottom: 15px;
-        }
-
-        .play-button {
-            width: 60px;
-            height: 60px;
-            background: #001f54;
-            border: none;
+        .play-btn {
+            width: 42px;
+            height: 42px;
             border-radius: 50%;
+            border: none;
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
-            margin: 0 auto;
-            box-shadow: 0 3px 10px rgba(0, 31, 84, 0.2);
-            transition: all 0.3s ease;
+            flex-shrink: 0;
+            transition: transform 0.15s;
             position: relative;
         }
 
-        .play-button:hover {
-            transform: scale(1.05);
-            box-shadow: 0 5px 15px rgba(0, 31, 84, 0.3);
-            background: #002a75;
-        }
+        .play-btn:hover  { transform: scale(1.08); }
+        .play-btn:active { transform: scale(0.95); }
 
-        .play-button:active {
-            transform: scale(0.98);
-        }
-
-        .play-button::before {
+        .play-btn::before {
             content: '';
-            width: 0;
-            height: 0;
-            border-left: 16px solid white;
-            border-top: 10px solid transparent;
-            border-bottom: 10px solid transparent;
+            width: 0; height: 0;
+            border-left: 13px solid white;
+            border-top: 8px solid transparent;
+            border-bottom: 8px solid transparent;
             margin-left: 3px;
         }
 
-        .play-button.playing::before {
-            border-left: none;
-            border-top: none;
-            border-bottom: none;
-            width: 16px;
-            height: 16px;
+        .play-btn.playing::before {
+            border: none;
+            width: 13px; height: 13px;
             background: linear-gradient(90deg, white 0%, white 35%, transparent 35%, transparent 65%, white 65%, white 100%);
             margin-left: 0;
         }
 
-        .audio-info {
-            text-align: center;
-            color: #999;
-            font-size: 11px;
-            margin-top: 8px;
-            font-weight: normal;
+        .btn-1 { background: #3b6fd4; }
+        .btn-2 { background: #c0392b; }
+        .btn-3 { background: #d4820a; }
+        .btn-4 { background: #1a9e6e; }
+
+        .card-info { flex: 1; }
+
+        .card-title {
+            font-size: 14px;
+            font-weight: 700;
+            color: #001f54;
+            margin-bottom: 3px;
         }
 
-        @media (max-width: 768px) {
-            .content {
-                flex-direction: column;
-                padding: 30px;
-                gap: 30px;
-            }
+        .card-desc {
+            font-size: 12px;
+            color: rgba(0,0,0,0.5);
+            line-height: 1.4;
+        }
 
-            .title {
-                font-size: 22px;
-            }
+        .badge {
+            font-size: 10px;
+            font-weight: 700;
+            padding: 3px 10px;
+            border-radius: 20px;
+            letter-spacing: 0.5px;
+            flex-shrink: 0;
+        }
 
-            .name {
-                font-size: 24px;
-            }
+        .badge-blue  { background: rgba(59,111,212,0.12);  color: #2a52a0; }
+        .badge-red   { background: rgba(192,57,43,0.12);   color: #a02a20; }
+        .badge-amber { background: rgba(212,130,10,0.12);  color: #8a5500; }
+        .badge-green { background: rgba(26,158,110,0.12);  color: #0a6e4a; }
 
-            .audio-card h3 {
-                font-size: 18px;
-            }
+        .progress-bar {
+            display: none;
+            height: 2px;
+            background: rgba(0,0,0,0.08);
+            border-radius: 2px;
+            margin-top: 10px;
+            overflow: hidden;
+        }
+        .progress-fill {
+            height: 100%; width: 0%;
+            border-radius: 2px;
+            transition: width 0.3s linear;
+        }
+        .audio-card.active .progress-bar { display: block; }
+
+        .font-ctrl {
+            position: fixed;
+            bottom: 20px; right: 20px;
+            background: #ffffff;
+            border: 1px solid #e0e0e0;
+            border-radius: 10px;
+            padding: 10px 16px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            z-index: 999;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        .font-ctrl:hover { opacity: 1; }
+
+        @media (max-width: 700px) {
+            .container { flex-direction: column; align-items: center; }
+            .image-section { width: 100%; flex-direction: row; align-items: flex-start; gap: 16px; }
+            .portrait-wrap { width: 120px; height: 155px; flex-shrink: 0; }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="content">
-            <div class="image-section">
-				<div class="portrait">
-                    <img src="jma.png" alt="test" style="max-width:100%; border:1px solid #E9EAE8;">
-                </div> 
-                <h1 class="name">José María Arguedas</h1>
-            </div>
-			
-            <div class="audio-section">
-                <p class="title">Extracto del cuento "El Sueño del Pongo"</p>
 
-                <div class="audio-card">
-                    <h3>Original Audio</h3>
-                    <p>(Español)</p>
-                    <button class="play-button" id="playBtn1" onclick="togglePlay(1)"></button>
-                    <div class="audio-info">Click para reproducir</div>
-                </div>
+<div class="container">
 
-                <div class="audio-card">
-                    <h3>Speech Synthesis</h3>
-                    <p>(Quechua)</p>
-                    <button class="play-button" id="playBtn2" onclick="togglePlay(2)"></button>
-                    <div class="audio-info">Click para reproducir</div>
-					
-                </div>
-            </div>
+    <div class="image-section">
+        <div class="portrait-wrap">
+            <img src="jma.png" alt="José María Arguedas">
         </div>
-		<div>Pongoq mosqoinin. Huk runas pongo turnunman risqa, tayta patronninpa hacienda wasinman. Taksalla, pubrilla, manchay pisi sonqollas kasqa chay runacha; pachallanpas thantay thanta. Hatun weraqocha patronqa asisqaraqsi chay runacha napaykuqtin, hacienda curridurpi.</div>
+        <p class="author-name">José María<br>Arguedas</p>
+        <p class="quechua-text">
+            Pongoq mosqoinin. Huk runas pongo turnunman risqa, tayta patronninpa hacienda wasinman. Taksalla, pubrilla, manchay pisi sonqollas kasqa chay runacha; pachallanpas thantay thanta. Hatun weraqocha patronqa asisqaraqsi chay runacha napaykuqtin, hacienda curridurpi.
+        </p>
     </div>
 
-    <script>
-        // Audio elements (simulados - reemplaza con tus URLs de audio reales)
-        const audio1 = new Audio();
-        const audio2 = new Audio();
-        
-        // Aquí debes agregar las URLs de tus archivos de audio
-        audio1.src = 'audio/original/JMA_pongodream.wav';
-        audio2.src = 'audio/xtts/JMA_pongodream.wav';
+    <div class="audio-section">
 
-        let currentAudio = null;
+        <p class="section-title">Extracto — "El Sueño del Pongo"</p>
+        <p class="section-subtitle">Comparación de síntesis de voz en quechua · XTTS v2</p>
 
-        function togglePlay(audioNumber) {
-            const audio = audioNumber === 1 ? audio1 : audio2;
-            const button = document.getElementById(`playBtn${audioNumber}`);
-            const otherAudio = audioNumber === 1 ? audio2 : audio1;
-            const otherButton = document.getElementById(`playBtn${audioNumber === 1 ? 2 : 1}`);
+        <div class="audio-card" id="card1" onclick="togglePlay(1)">
+            <button class="play-btn btn-1" id="playBtn1"></button>
+            <div class="card-info">
+                <p class="card-title">1. Audio original</p>
+                <p class="card-desc">Español · voz humana de referencia</p>
+                <div class="progress-bar"><div class="progress-fill" id="prog1" style="background:#3b6fd4;"></div></div>
+            </div>
+            <span class="badge badge-blue">Referencia</span>
+        </div>
 
-            // Pausar el otro audio si está reproduciéndose
-            if (!otherAudio.paused) {
-                otherAudio.pause();
-                otherAudio.currentTime = 0;
-                otherButton.classList.remove('playing');
+        <div class="audio-card" id="card2" onclick="togglePlay(2)">
+            <button class="play-btn btn-2" id="playBtn2"></button>
+            <div class="card-info">
+                <p class="card-title">2. Modelo base — inglés</p>
+                <p class="card-desc">Quechua · XTTS v2 sin fine-tuning (base inglés)</p>
+                <div class="progress-bar"><div class="progress-fill" id="prog2" style="background:#c0392b;"></div></div>
+            </div>
+            <span class="badge badge-red">Sin ajuste</span>
+        </div>
+
+        <div class="audio-card" id="card3" onclick="togglePlay(3)">
+            <button class="play-btn btn-3" id="playBtn3"></button>
+            <div class="card-info">
+                <p class="card-title">3. Modelo base — español</p>
+                <p class="card-desc">Quechua · XTTS v2 sin fine-tuning (base español)</p>
+                <div class="progress-bar"><div class="progress-fill" id="prog3" style="background:#d4820a;"></div></div>
+            </div>
+            <span class="badge badge-amber">Sin ajuste</span>
+        </div>
+
+        <div class="audio-card" id="card4" onclick="togglePlay(4)">
+            <button class="play-btn btn-4" id="playBtn4"></button>
+            <div class="card-info">
+                <p class="card-title">4. Modelo fine-tuned — quechua chanka</p>
+                <p class="card-desc">Quechua · XTTS v2 ajustado con corpus Chanca Runasimi</p>
+                <div class="progress-bar"><div class="progress-fill" id="prog4" style="background:#1a9e6e;"></div></div>
+            </div>
+            <span class="badge badge-green">Fine-tuned ✓</span>
+        </div>
+
+    </div>
+</div>
+
+<div class="font-ctrl">
+    <span style="font-size: 11px; color: #888; white-space: nowrap;">Tamaño texto</span>
+    <input type="range" id="fontSlider" min="9" max="22" value="12" step="1" style="width: 100px; cursor: pointer;">
+    <span id="fontSizeLabel" style="font-size: 11px; font-weight: 700; color: #001f54; min-width: 28px;">12px</span>
+</div>
+
+<script>
+    const srcs = {
+        1: 'audio/original/JMA_pongodream.wav',
+        2: 'audio/original/JMA_pongodream_en_qu.wav',
+        3: 'audio/original/JMA_pongodream_es_qu.wav',
+        4: 'audio/xtts/JMA_pongodream.wav'
+    };
+
+    const audioMap = {};
+    [1,2,3,4].forEach(n => {
+        audioMap[n] = new Audio(srcs[n]);
+        audioMap[n].addEventListener('ended', () => stopAll());
+        audioMap[n].addEventListener('timeupdate', () => {
+            const a = audioMap[n];
+            if (a.duration) {
+                document.getElementById('prog'+n).style.width = (a.currentTime / a.duration * 100) + '%';
             }
-
-            // Alternar reproducción
-            if (audio.paused) {
-                if (!audio.src) {
-                    alert('Por favor, configure la URL del archivo de audio en el código');
-                    return;
-                }
-                audio.play();
-                button.classList.add('playing');
-            } else {
-                audio.pause();
-                audio.currentTime = 0;
-                button.classList.remove('playing');
-            }
-        }
-
-        // Event listeners para cuando termina el audio
-        audio1.addEventListener('ended', () => {
-            document.getElementById('playBtn1').classList.remove('playing');
         });
+    });
 
-        audio2.addEventListener('ended', () => {
-            document.getElementById('playBtn2').classList.remove('playing');
+    let playing = null;
+
+    function stopAll() {
+        [1,2,3,4].forEach(n => {
+            audioMap[n].pause();
+            audioMap[n].currentTime = 0;
+            document.getElementById('playBtn'+n).classList.remove('playing');
+            document.getElementById('card'+n).classList.remove('active');
+            document.getElementById('prog'+n).style.width = '0%';
         });
-    </script>
+        playing = null;
+    }
+
+    function togglePlay(n) {
+        if (playing === n) { stopAll(); return; }
+        stopAll();
+        audioMap[n].play().catch(() => {});
+        document.getElementById('playBtn'+n).classList.add('playing');
+        document.getElementById('card'+n).classList.add('active');
+        playing = n;
+    }
+
+    const slider = document.getElementById('fontSlider');
+    const label  = document.getElementById('fontSizeLabel');
+
+    slider.addEventListener('input', () => {
+        const s = parseInt(slider.value);
+        label.textContent = s + 'px';
+        document.querySelectorAll('.card-title').forEach(el => el.style.fontSize = (s + 2) + 'px');
+        document.querySelectorAll('.card-desc').forEach(el  => el.style.fontSize = s + 'px');
+        document.querySelectorAll('.badge').forEach(el      => el.style.fontSize = Math.max(s - 2, 8) + 'px');
+        document.querySelectorAll('.section-subtitle').forEach(el => el.style.fontSize = s + 'px');
+    });
+</script>
+
 </body>
 </html>
