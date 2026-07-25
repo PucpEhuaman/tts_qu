@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Comparación de Arras — Original vs Actualizado</title>
+<style>
+  :root{
+    --bg:#f4f5f7; --card:#ffffff; --ink:#1f2937; --muted:#6b7280;
+    --line:#e5e7eb; --pri:#1d4ed8;
+    --added:#16a34a; --added-bg:#dcfce7; --added-bd:#86efac;
+    --removed:#dc2626; --removed-bg:#fee2e2; --removed-bd:#fca5a5;
+    --new:#9333ea; --new-bg:#f3e8ff; --new-bd:#d8b4fe;
+    --same-bg:#f9fafb;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:'Segoe UI',Roboto,Arial,sans-serif;background:var(--bg);color:var(--ink);line-height:1.55;font-size:15px}
+  header{background:linear-gradient(135deg,#1e3a8a,#1d4ed8);color:#fff;padding:26px 24px 18px;box-shadow:0 2px 8px rgba(0,0,0,.12)}
+  header h1{margin:0 0 4px;font-size:22px}
+  header p{margin:0;opacity:.9;font-size:13.5px}
+  .wrap{max-width:1180px;margin:0 auto;padding:0 18px 60px}
+  .toolbar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin:18px 0 8px}
+  .toolbar button{background:#fff;border:1px solid var(--line);border-radius:8px;padding:9px 14px;cursor:pointer;font-size:13.5px;font-weight:600;color:var(--ink);transition:.15s}
+  .toolbar button:hover{border-color:var(--pri);color:var(--pri)}
+  .legend{display:flex;flex-wrap:wrap;gap:14px;margin:8px 0 4px;font-size:12.5px;color:var(--muted)}
+  .legend span{display:inline-flex;align-items:center;gap:6px}
+  .dot{width:12px;height:12px;border-radius:3px;display:inline-block;border:1px solid}
+  .dot.added{background:var(--added-bg);border-color:var(--added-bd)}
+  .dot.removed{background:var(--removed-bg);border-color:var(--removed-bd)}
+  .dot.new{background:var(--new-bg);border-color:var(--new-bd)}
+  .dot.same{background:var(--same-bg);border-color:var(--line)}
+
+  .summary{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:16px 18px;margin:16px 0 22px}
+  .summary h2{margin:0 0 10px;font-size:15px;color:var(--pri)}
+  .summary ol{margin:0;padding-left:20px}
+  .summary li{margin:4px 0}
+  .summary a{color:var(--pri);text-decoration:none;font-weight:600}
+  .summary a:hover{text-decoration:underline}
+
+  .block{background:var(--card);border:1px solid var(--line);border-radius:10px;margin:14px 0;overflow:hidden}
+  .block.same.ghost{display:block}
+  .block-head{display:flex;justify-content:space-between;align-items:center;padding:10px 16px;border-bottom:1px solid var(--line);background:#fafbfc}
+  .block-head .t{font-weight:700;font-size:13.5px;letter-spacing:.3px}
+  .block-head .tag{font-size:11px;font-weight:700;padding:3px 9px;border-radius:20px;text-transform:uppercase;letter-spacing:.4px}
+  .tag.same{background:#eef2ff;color:#4338ca}
+  .tag.changed{background:#fef9c3;color:#854d0e}
+  .tag.added{background:var(--added-bg);color:var(--added)}
+  .tag.removed{background:var(--removed-bg);color:var(--removed)}
+  .tag.new{background:var(--new-bg);color:var(--new)}
+  .body{padding:14px 18px}
+  .body p{margin:8px 0}
+  .body strong.k{display:block;margin-top:10px;color:#111827}
+
+  /* full-width unchanged */
+  .block.same .body{background:var(--same-bg);color:var(--muted)}
+  .block.same.collapsed .body{display:none}
+
+  /* side-by-side */
+  .split{display:grid;grid-template-columns:1fr 1fr;gap:0}
+  .col{padding:14px 18px;border-left:1px solid var(--line)}
+  .col:first-child{border-left:none}
+  .col.removed{background:var(--removed-bg);border-top:3px solid var(--removed-bd)}
+  .col.added{background:var(--added-bg);border-top:3px solid var(--added-bd)}
+  .col.new{background:var(--new-bg);border-top:3px solid var(--new-bd)}
+  .col .coltag{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px}
+  .col.removed .coltag{color:var(--removed)}
+  .col.added .coltag{color:var(--added)}
+  .col.new .coltag{color:var(--new)}
+  .col.empty{color:var(--muted);font-style:italic;background:#f3f4f6;display:flex;align-items:center;justify-content:center;text-align:center;padding:30px 18px}
+  .money{font-variant-numeric:tabular-nums;font-weight:700}
+
+  .note{background:#fffbeb;border:1px solid #fde68a;border-radius:8px;padding:10px 14px;margin:16px 0;font-size:13px;color:#92400e}
+
+  @media(max-width:760px){
+    .split{grid-template-columns:1fr}
+    .col{border-left:none;border-top:1px solid var(--line)}
+  }
+  @media print{
+    header{background:#1d4ed8!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+    .toolbar{display:none}
+    body{background:#fff}
+    .block{break-inside:avoid}
+  }
+  .hl{background:#fff59d;padding:0 3px;border-radius:3px;font-weight:600}
+</style>
+</head>
+<body>
+<header>
+  <h1>Comparación del Compromiso de Arras</h1>
+  <p>Calle Manuel Toribio Ureta N° 148, Balconcillo — La Victoria, Lima &nbsp;|&nbsp; Original vs. Actualizado</p>
+</header>
+
+<div class="wrap">
+  <div class="toolbar">
+    <button onclick="window.print()">🖨️ Imprimir / PDF</button>
+    <button id="toggleBtn" onclick="toggleSame()">👁️ Ocultar secciones sin cambios</button>
+  </div>
+  <div class="legend">
+    <span><i class="dot added"></i> Texto modificado / nuevo</span>
+    <span><i class="dot removed"></i> Texto original reemplazado</span>
+    <span><i class="dot new"></i> Cláusula nueva</span>
+    <span><i class="dot same"></i> Sin cambios</span>
+  </div>
+
+  <div class="summary">
+    <h2>Resumen de cambios (3)</h2>
+    <ol>
+      <li><a href="#c3">Cláusula TERCERA — Precio y Forma de Pago</a>: total S/. 780,000 → <b>S/. 718,000</b>; pago con cuota inicial de S/. 216,000 + crédito hipotecario de S/. 502,000 (banco paga directamente; sin garantía de fecha).</li>
+      <li><a href="#c9">Cláusula NOVENA — Financiamiento Hipotecario</a> (nueva): si el banco deniega el crédito por observaciones del inmueble, se resuelve el arras con devolución íntegra.</li>
+      <li><a href="#c10">Cláusula DÉCIMA — Ratificación de Copropietarios</a> (nueva): la venta queda condicionada a la ratificación de Julia y Juan Manuel; si no ratifican, devolución íntegra.</li>
+    </ol>
+  </div>
+
+  <div class="note">
+    ℹ️ Las secciones en gris están <b>sin cambios</b> (se muestran una sola vez). Solo se comparan lado a lado las partes modificadas. Este documento es una ayuda visual; la versión formal debe ser revisada por un abogado peruano.
+  </div>
+
+  <!-- ============ PREÁMBULO (sin cambios) ============ -->
+  <div class="block same">
+    <div class="block-head"><span class="t">Preámbulo — Comparecencia de las Partes</span><span class="tag same">Sin cambios</span></div>
+    <div class="body">
+      <p>Conste por el presente documento el COMPROMISO de ARRAS (en adelante, el "Arras") que celebran, de una parte:</p>
+      <p><strong>EDWIN HUAMAN CURO</strong>, de nacionalidad peruana, identificado con DNI N° 42369584, de ocupación _____________, de estado civil _____________ y la señora _________________________________, de nacionalidad peruana, identificada con DNI N° _____________, de ocupación _____________, de estado civil _____________, ambos con domicilio en Av. Esteban Campodónico N° 520, departamento 120, urbanización Santa Catalina, distrito de La Victoria, provincia y departamento de Lima, quien en adelante se denominará <strong>"EL PROMITENTE COMPRADOR"</strong>; y de la otra parte,</p>
+      <p><strong>LUCIA R. CONCEPCIÓN MOSCA</strong>, de nacionalidad peruana, identificada con D.N.I. N° ________, de ocupación su casa, de estado civil divorciada, con domicilio en Calle Manuel Toribio Ureta N° 148, Balconcillo, distrito de La Victoria, provincia y departamento de Lima, a quien en adelante se denominará <strong>"LA PROMITENTE VENDEDORA"</strong>.</p>
+      <p>Asimismo, al PROMITENTE COMPRADOR y a LA PROMITENTE VENDEDORA serán denominados en forma individual como la "Parte" y en forma conjunta y cuando corresponda, como las "Partes"; las que suscriben el presente documento bajo las condiciones y términos de las cláusulas siguientes:</p>
+    </div>
+  </div>
+
+  <!-- PRIMERA -->
+  <div class="block same">
+    <div class="block-head"><span class="t">PRIMERA: Antecedentes</span><span class="tag same">Sin cambios</span></div>
+    <div class="body">
+      <p>1.1 LA PROMITENTE VENDEDORA es propietaria del inmueble ubicado Calle Manuel Toribio Ureta N° 148, Balconcillo, distrito de La Victoria, provincia y departamento de Lima, cuyas características, medidas perimétricas y otros corren inscritos en la <strong>Partida Electrónica N° 43506722</strong> del Registro de Propiedad Inmueble de la Oficina Registral de Lima (en adelante, el "Inmueble").</p>
+      <p>1.2 Las Partes declaran que el Inmueble es de propiedad de la PROMITENTE VENDEDORA doña Lucía R. Concepción Mosca, así como de doña Julia Mercedes Concepción Mosca y don Juan Manuel Concepción Mosca.</p>
+      <p>1.3 EL PROMITENTE COMPRADOR es una persona natural, que ha visitado y revisado el Inmueble — así como la documentación correspondiente — que adquirirá de LA PROMITENTE VENDEDORA.</p>
+    </div>
+  </div>
+
+  <!-- SEGUNDA -->
+  <div class="block same">
+    <div class="block-head"><span class="t">SEGUNDA: Objeto</span><span class="tag same">Sin cambios</span></div>
+    <div class="body">
+      <p>Por el presente documento de Arras, la PROMITENTE VENDEDORA y el PROMITENTE COMPRADOR, manifiestan una vender y la otra, la de adquirir en compraventa el Inmueble descrito en la cláusula primera, por el precio y la forma indicados a continuación.</p>
+    </div>
+  </div>
+
+  <!-- ============ TERCERA — CAMBIADA ============ -->
+  <div class="block" id="c3">
+    <div class="block-head"><span class="t">TERCERA: Precio y Forma de Pago</span><span class="tag changed">Modificada</span></div>
+    <div class="split">
+      <div class="col removed">
+        <div class="coltag">▶ Original (reemplazado)</div>
+        <p>El precio de venta pactado por la enajenación total del Inmueble descrito en la cláusula primera asciende a la suma de <span class="money">S/. 780,000.00</span> (Setecientos ochenta mil con 00/100 soles) que EL PROMITENTE COMPRADOR pagará de la forma siguiente:</p>
+        <p>La suma de S/. 5,000.00 (Cinco mil con 00/100 soles), que se pagará mediante cheque de gerencia no negociable emitido por un Banco de primer nivel a nombre de la PROMITENTE VENDEDORA — doña Lucia R. Concepción Mosca — a la firma del contrato de arras confirmatorias.</p>
+        <p>La suma de <span class="money">S/. 775,000.00</span> (Setecientos setenta y cinco mil con 00/100 soles), que se pagará mediante cheque no negociable emitido por un Banco de primer nivel, a la firma de la minuta y escritura pública de compraventa — por los propietarios del Inmueble señalados en el numeral 1.2 de la cláusula primera, emitidos por los montos y a nombre de cada uno de los propietarios, de acuerdo con lo que se señala a continuación:</p>
+        <ul>
+          <li>Un cheque de gerencia por <span class="money">S/. 255,000.00</span> a nombre de doña Lucia R. Concepción Mosca.</li>
+          <li>Un cheque de gerencia por <span class="money">S/. 260,000.00</span> a nombre de doña Julia Mercedes Concepción Mosca.</li>
+          <li>Un cheque de gerencia por <span class="money">S/. 260,000.00</span> a nombre de don Juan Manuel Concepción Mosca.</li>
+        </ul>
+      </div>
+      <div class="col added">
+        <div class="coltag">▶ Actualizado</div>
+        <p>El precio de venta pactado por la enajenación total del Inmueble descrito en la cláusula primera asciende a la suma de <span class="hl money">S/. 718,000.00</span> (Setecientos dieciocho mil con 00/100 soles), que EL PROMITENTE COMPRADOR pagará de la forma siguiente:</p>
+        <p><strong>3.1 Cuota Inicial.-</strong> La suma de <span class="hl money">S/. 216,000.00</span> (Doscientos dieciséis mil con 00/100 soles), que comprende las Arras Confirmatorias de S/. 5,000.00 entregadas a la firma del presente documento. El saldo de la cuota inicial, equivalente a <span class="hl money">S/. 211,000.00</span>, <span class="hl">será pagado directamente por EL PROMITENTE COMPRADOR</span> a los propietarios, mediante cheques de gerencia no negociables a nombre de cada uno, a la firma de la minuta y escritura pública de compraventa.</p>
+        <p><strong>3.2 Crédito Hipotecario.-</strong> La suma de <span class="hl money">S/. 502,000.00</span> (Quinientos dos mil con 00/100 soles), financiada mediante crédito hipotecario conforme a la cláusula NOVENA. <span class="hl">Dicho monto será pagado directamente por la entidad financiera a los propietarios del Inmueble</span>, mediante cheques de gerencia no negociables emitidos a nombre de cada uno, <span class="hl">de acuerdo con el cronograma y procedimiento interno de la entidad financiera</span>.</p>
+        <p>Las Partes dejan constancia que el desembolso queda <span class="hl">sujeto a (i) la aprobación del crédito (tasación + estudio de títulos) y (ii) la inscripción de la hipoteca en SUNARP</span>. En consecuencia, <span class="hl">EL PROMITENTE COMPRADOR no garantiza ni asume responsabilidad por la fecha de pago</span>, siendo responsabilidad exclusiva de la entidad financiera. En caso de denegatoria, se aplica la cláusula NOVENA.</p>
+        <p><strong>3.3</strong> Montos que por todo concepto recibirá cada propietario:</p>
+        <ul>
+          <li>Doña Lucia R. Concepción Mosca: <span class="money">S/. 239,333.33</span></li>
+          <li>Doña Julia Mercedes Concepción Mosca: <span class="money">S/. 239,333.33</span></li>
+          <li>Don Juan Manuel Concepción Mosca: <span class="money">S/. 239,333.33</span></li>
+        </ul>
+        <p style="font-size:12.5px;color:#4d7c0f">Los cheques del crédito los emite el banco; los de la cuota inicial los emite el comprador.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- CUARTA -->
+  <div class="block same">
+    <div class="block-head"><span class="t">CUARTA: Entrega de Arras Confirmatorias</span><span class="tag same">Sin cambios</span></div>
+    <div class="body">
+      <p>En este acto, EL PROMITENTE COMPRADOR entrega en favor de LA PROMITENTE VENDEDORA doña Lucia R. Concepción Mosca, en calidad de Arras Confirmatorias la suma de S/. 5,000.00 (Cinco mil con 00/100 soles), que se pagará mediante cheque de gerencia no negociable emitido por un Banco de primer nivel; las firmas de ambas Partes puestas al final del presente documento son prueba de su entrega. Siendo el presente un Contrato de Arras confirmatorias, el monto entregado en arras se imputará al pago del precio total de venta al momento de celebrarse la minuta de compraventa.</p>
+    </div>
+  </div>
+
+  <!-- QUINTA -->
+  <div class="block same">
+    <div class="block-head"><span class="t">QUINTA: Del Plazo</span><span class="tag same">Sin cambios</span></div>
+    <div class="body">
+      <p>Las Partes acuerdan otorgarse el plazo que vencerá indefectiblemente el día <strong>15 de octubre de 2026</strong> próximo, como plazo máximo, para la suscripción de la minuta de compraventa definitiva y escritura pública que de esta corresponda.</p>
+      <p style="font-size:12.5px;color:#92400e">⚠️ Sugerencia: revisar si este plazo es suficiente para cubrir firma + inscripción de hipoteca + desembolso del banco (no se modificó aún).</p>
+    </div>
+  </div>
+
+  <!-- SEXTA -->
+  <div class="block same">
+    <div class="block-head"><span class="t">SEXTA: Arras Penales</span><span class="tag same">Sin cambios</span></div>
+    <div class="body">
+      <p>Las Partes dejan expresa constancia que, de conformidad con lo establecido por el Artículo 1478 del Código Civil, si EL PROMITENTE COMPRADOR se desistiera de la compraventa o no cumpliera con todos los requisitos para que se extienda la escritura pública de compraventa, LA PROMITENTE VENDEDORA puede dejar sin efecto el contrato, conservando las Arras. En caso sea LA PROMITENTE VENDEDORA la que se desistiera de vender, EL PROMITENTE COMPRADOR puede dejar sin efecto el contrato, exigiendo el doble de las Arras.</p>
+      <p style="font-size:12.5px;color:#92400e">⚠️ Las cláusulas NOVENA y DÉCIMA funcionan como <b>excepción</b> a esta pena (devolución íntegra).</p>
+    </div>
+  </div>
+
+  <!-- SÉPTIMA -->
+  <div class="block same">
+    <div class="block-head"><span class="t">SÉPTIMA: Obligaciones de las Partes</span><span class="tag same">Sin cambios</span></div>
+    <div class="body">
+      <p>Sin perjuicio de las demás obligaciones que de acuerdo a ley les corresponda, EL PROMITENTE VENDEDORA se compromete a:</p>
+      <ul>
+        <li>Transferir la propiedad del Inmueble a favor del PROMITENTE COMPRADOR sin adeudar ningún monto por cualquier deuda de naturaleza municipal, fiscal, administrativa, de servicios públicos, entre otras.</li>
+        <li>Suscribir todos los documentos que sean razonablemente necesarios a fin de formalizar la transferencia de la propiedad del Inmueble en los Registros Públicos a favor del PROMITENTE COMPRADOR.</li>
+      </ul>
+      <p>El PROMITENTE COMPRADOR se obliga a:</p>
+      <ul>
+        <li>Suscribir la Escritura Pública de Compraventa dentro del plazo señalado en el presente convenio.</li>
+        <li>Cumplir con el pago del íntegro del Precio de Compra en base a lo indicado en el Arras.</li>
+        <li>Pagar el impuesto de alcabala que genere la celebración del presente Contrato en forma oportuna.</li>
+        <li>Efectuar el procedimiento de alta de los Inmuebles ante la municipalidad correspondiente.</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- OCTAVA -->
+  <div class="block same">
+    <div class="block-head"><span class="t">OCTAVA: Misceláneas</span><span class="tag same">Sin cambios</span></div>
+    <div class="body">
+      <ul>
+        <li>Todos los tributos que se generen son de cargo del PROMITENTE COMPRADOR, salvo el impuesto a la renta por la venta (cargo de LA PROMITENTE VENDEDORA si aplica).</li>
+        <li>Impuesto predial: cargo de LA PROMITENTE VENDEDORA por el año en curso y anteriores; cargo del PROMITENTE COMPRADOR a partir del año siguiente.</li>
+        <li>Impuesto de Alcabala (D.Leg. N° 776): asumido íntegramente por el PROMITENTE COMPRADOR.</li>
+        <li>LA PROMITENTE VENDEDORA entregará Constancia de No Adeudo del Impuesto Predial y Arbitrios con 5 días hábiles de anticipación a la firma de la Escritura.</li>
+        <li>Gastos notariales y registrales: cuenta única y exclusiva del PROMITENTE COMPRADOR.</li>
+        <li>Ley aplicable: leyes de la República del Perú; Código Civil y demás legislación aplicable.</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ============ NOVENA — NUEVA ============ -->
+  <div class="block" id="c9">
+    <div class="block-head"><span class="t">NOVENA: Financiamiento Hipotecario</span><span class="tag new">Cláusula nueva</span></div>
+    <div class="split">
+      <div class="col empty">— No existe en el original —</div>
+      <div class="col new">
+        <div class="coltag">▶ Cláusula nueva (agregada)</div>
+        <p>Las Partes dejan expresa constancia que EL PROMITENTE COMPRADOR financiará parcialmente la adquisición del Inmueble mediante un <span class="hl">crédito hipotecario</span> otorgado por una entidad del sistema financiero.</p>
+        <p>En caso que, como consecuencia de la evaluación, tasación y/o estudio de títulos del Inmueble, la o las entidades bancarias formulen observaciones que <span class="hl">impidan, desaconsejen o hagan inviable el otorgamiento del crédito hipotecario</span>, las Partes acuerdan resolver de mutuo acuerdo el presente Compromiso de Arras, <span class="hl">sin lugar a penalidad ni responsabilidad</span> para ninguna de ellas.</p>
+        <p>En ese supuesto, y como <span class="hl">excepción a la cláusula SEXTA</span>, LA PROMITENTE VENDEDORA devolverá a EL PROMITENTE COMPRADOR la íntegra de la suma entregada en calidad de Arras Confirmatorias, dentro del plazo de <span class="hl">cinco (5) días hábiles</span> desde la comunicación escrita de la denegatoria, sin descuento, retención ni compensación alguna.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ DÉCIMA — NUEVA ============ -->
+  <div class="block" id="c10">
+    <div class="block-head"><span class="t">DÉCIMA: Ratificación de Copropietarios</span><span class="tag new">Cláusula nueva</span></div>
+    <div class="split">
+      <div class="col empty">— No existe en el original —</div>
+      <div class="col new">
+        <div class="coltag">▶ Cláusula nueva (agregada)</div>
+        <p>Las Partes dejan constancia que el Inmueble es de copropiedad de doña Lucia R. Concepción Mosca, doña Julia Mercedes Concepción Mosca y don Juan Manuel Concepción Mosca (numeral 1.2 de la cláusula primera). LA PROMITENTE VENDEDORA suscribe el presente Arras en su calidad de copropietaria.</p>
+        <p>La exigibilidad de la presente promesa de compraventa queda <span class="hl">condicionada a la ratificación expresa</span> de los copropietarios doña Julia Mercedes Concepción Mosca y don Juan Manuel Concepción Mosca, dentro del plazo improrrogable de <span class="hl">_____ días calendario</span> desde la firma, con firma legalizada ante Notario Público.</p>
+        <p>En caso los referidos copropietarios <span class="hl">no otorguen la ratificación</span> dentro del plazo, las Partes acuerdan resolver de mutuo acuerdo el presente Arras, sin penalidad. Como <span class="hl">excepción a la cláusula SEXTA</span>, LA PROMITENTE VENDEDORA devolverá la íntegra de las Arras dentro de <span class="hl">cinco (5) días hábiles</span> del vencimiento del plazo de ratificación, sin descuento alguno.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- CIERRE -->
+  <div class="block same">
+    <div class="block-head"><span class="t">Suscripción y Firmas</span><span class="tag same">Sin cambios</span></div>
+    <div class="body">
+      <p>Suscrito en la ciudad de Lima, a los _____ días del mes de ______ del año 2026.</p>
+      <p><strong>PROMITENTE COMPRADOR:</strong> Edwin Huaman Curo — DNI N° 42369584 &nbsp;|&nbsp; <strong>LA PROMITENTE VENDEDORA:</strong> Lucia R. Concepción Mosca — DNI N° ________</p>
+    </div>
+  </div>
+
+  <div class="note" style="margin-top:24px">
+    ⚠️ <b>Aviso:</b> Esta comparación es una herramienta de apoyo visual, no constituye asesoría legal ni reemplaza el documento formal. La versión final del arras debe ser revisada y validada por un abogado peruano colegiado antes de su firma.
+  </div>
+</div>
+
+<script>
+  let hidden=false;
+  function toggleSame(){
+    hidden=!hidden;
+    document.querySelectorAll('.block.same').forEach(b=>b.style.display=hidden?'none':'');
+    document.getElementById('toggleBtn').textContent = hidden ? '👁️ Mostrar secciones sin cambios' : '👁️ Ocultar secciones sin cambios';
+  }
+  document.querySelectorAll('.summary a').forEach(a=>{
+    a.addEventListener('click',e=>{
+      e.preventDefault();
+      const t=document.querySelector(a.getAttribute('href'));
+      if(t){t.scrollIntoView({behavior:'smooth',block:'center'});t.style.transition='box-shadow .6s';t.style.boxShadow='0 0 0 3px #1d4ed8';setTimeout(()=>t.style.boxShadow='',1400);}
+    });
+  });
+</script>
+</body>
+</html>
