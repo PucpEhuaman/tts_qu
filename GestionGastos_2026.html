@@ -24,6 +24,8 @@
   body.js{overflow:hidden}
   body.js .slide{position:absolute;inset:0;display:none;min-height:0}
   body.js .slide.active{display:flex}
+  body.js .slide.off{display:none}
+  body:not(.js) .slide.off{display:none}
 
   .kicker{font-size:12px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--teal);margin-bottom:8px}
   h2{font-size:32px;font-weight:800;letter-spacing:-.01em;margin-bottom:6px}
@@ -78,6 +80,8 @@
   table.mes.det td.m{position:sticky;left:0;background:#fff;z-index:2;min-width:205px}
   table.mes.det th:first-child{position:sticky;left:0;z-index:3}
   table.mes.det tr.tot td.m{background:#111827;color:#fff}
+  table.mes.det th.proj{opacity:.65}
+  table.mes.det td.proj{opacity:.55}
 
   /* cierre */
   .reparto-linea{display:flex;align-items:center;gap:18px;font-size:26px;font-weight:800;margin:14px 0}
@@ -90,7 +94,7 @@
   .counter{position:fixed;bottom:28px;left:28px;font-size:12px;color:var(--faint);letter-spacing:.14em;z-index:50;background:#fff;padding:2px 8px;border-radius:6px}
 
   /* tabla scrollable en pantallas chicas */
-  .tbl-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
+  .tbl-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;min-width:0;max-width:100%}
 
   /* ═══ RESPONSIVE ═══ */
   @media (max-width:900px){
@@ -138,7 +142,7 @@
 <div id="deck">
 
 <!-- 1 · PORTADA -->
-<section class="slide" style="justify-content:center">
+<section class="slide off" style="justify-content:center">
   <div class="kicker">Informe 2026</div>
   <h2 style="font-size:52px">Cuánto ingresa, cuánto se gasta<br><span style="font-weight:400">y cuánto se abona a Mamá</span></h2>
   <p class="take" style="font-size:18px;margin-top:12px">El evolutivo mes a mes del año, con el importe sobre cada barra.</p>
@@ -149,7 +153,7 @@
 </section>
 
 <!-- 2 · NÚMEROS CLAVE -->
-<section class="slide">
+<section class="slide off">
   <div class="kicker">Números clave</div>
   <h2 class="thin">Las tres cifras de cada mes</h2>
   <p class="take">Lo que entra se reparte entre los gastos de la casa con la ayudante, y el abono a Mamá (que ella administra libremente).</p>
@@ -187,7 +191,7 @@
 </section>
 
 <!-- 3 · CUÁNTO INGRESA -->
-<section class="slide">
+<section class="slide off">
   <div class="kicker">01 · Ingresos</div>
   <h2 class="thin">Cuánto <span class="cin">ingresa</span> cada mes</h2>
   <p class="take">Total sobre cada barra y origen dentro: Tienda 1, Tienda 2 y Aporte 8 Hermanos. De abril a julio sube a 5,800 (Tienda 1 pasa de 2,000 a 2,600), en agosto baja a 5,000 (Tienda 1 a 1,800) y desde septiembre son 5,600 (el Aporte baja de 1,400 a 1,200).</p>
@@ -196,7 +200,7 @@
 </section>
 
 <!-- 4 · CUÁNTO SE GASTA -->
-<section class="slide">
+<section class="slide off">
   <div class="kicker">02 · Gastos</div>
   <h2 class="thin">Cuánto se <span class="cga">gasta</span> cada mes</h2>
   <p class="take">Servicios de la casa (luz, agua, otros) + pago a la ayudante Rosa. No incluye el abono a Mamá. Baja de 2,100 a 1,900 desde septiembre: los hermanos asumen parte de los "otros" (300 → 100) y Rosa pasa a recibir 1,200 + 200 por Tienda 2.</p>
@@ -205,7 +209,7 @@
 </section>
 
 <!-- 5 · CUÁNTO SE ABONA A MAMÁ -->
-<section class="slide">
+<section class="slide off">
   <div class="kicker">03 · Abono a Mamá</div>
   <h2 class="thin">Cuánto se <span class="cma">abona a Mamá</span> cada mes</h2>
   <p class="take">Sale de todos los ingresos y ella decide cómo usarlo. Es 3,100 en ene–mar, sube a 3,700 de abr–jul (Tienda 1 a 2,600), baja puntual en agosto (2,900) y se mantiene en 3,700 desde septiembre.</p>
@@ -214,7 +218,7 @@
 </section>
 
 <!-- 6 · CÓMO SE REPARTE -->
-<section class="slide">
+<section class="slide off">
   <div class="kicker">Todo junto</div>
   <h2 class="thin">Cómo se reparte lo que <span class="cin">ingresa</span></h2>
   <p class="take">Cada barra es el ingreso del mes: una parte gris se gasta en la casa y la ayudante, y la parte rosada es el abono a Mamá (más de la mitad).</p>
@@ -230,7 +234,7 @@
     <div class="tbl-scroll">
       <table class="mes det" id="tbl"></table>
     </div>
-    <p class="foot" style="margin-top:14px"><span>Gastos = luz + agua + otros + ayudante Rosa (no incluye abono a Mamá) · Total Alquileres = Tienda 1 + Tienda 2</span></p>
+    <p class="foot" style="margin-top:14px"><span>Gastos = luz + agua + otros + ayudante Rosa (no incluye abono a Mamá) · Total Alquileres = Tienda 1 + Tienda 2 · Sep – Dic en transparencia = proyección</span></p>
   </section>
 
 <!-- 8 · CIERRE -->
@@ -284,7 +288,8 @@
   if (body.className.indexOf('js') === -1) body.className = (body.className ? body.className + ' ' : '') + 'js';
   var slides = [], els = document.getElementsByTagName('section');
   for (var i = 0; i < els.length; i++) {
-    if ((' ' + els[i].className + ' ').indexOf(' slide ') > -1) slides.push(els[i]);
+    var cls = ' ' + els[i].className + ' ';
+    if (cls.indexOf(' slide ') > -1 && cls.indexOf(' off ') === -1) slides.push(els[i]);
   }
   var total = slides.length, idx = 0;
   function pad(n){ return (n<10?'0':'')+n; }
@@ -498,20 +503,25 @@
   for(var i=0;i<12;i++){ ING.push(T1[i]+T2[i]+APORT[i]); GAS.push(SERV[i]+ROSA_D[i]); MAM.push(MAMA_T1[i]+MAMA_T2[i]); ALQ.push(T1[i]+T2[i]); }
   function suma(a){var s=0;for(var j=0;j<a.length;j++)s+=a[j];return s;}
   function nn(n){return String(n).replace(/\B(?=(\d{3})+(?!\d))/g,",");}
+  function cc(cls,j){
+    var c=cls?cls:'';
+    if(j>=8)c+=(c?' ':'')+'proj';
+    return c;
+  }
   function fila(nombre,arr,cls){
     var s='<tr><td class="m">'+nombre+'</td>';
-    for(var j=0;j<12;j++)s+='<td'+(cls?' class="'+cls+'"':'')+'>'+nn(arr[j])+'</td>';
+    for(var j=0;j<12;j++){var c=cc(cls,j);s+='<td'+(c?' class="'+c+'"':'')+'>'+nn(arr[j])+'</td>';}
     s+='<td'+(cls?' class="'+cls+'"':'')+'><b>'+nn(suma(arr))+'</b></td></tr>';
     return s;
   }
   function filat(nombre,arr,cls){
     var s='<tr class="tot"><td class="m">'+nombre+'</td>';
-    for(var j=0;j<12;j++)s+='<td'+(cls?' class="'+cls+'"':'')+'>'+nn(arr[j])+'</td>';
+    for(var j=0;j<12;j++){var c=cc(cls,j);s+='<td'+(c?' class="'+c+'"':'')+'>'+nn(arr[j])+'</td>';}
     s+='<td'+(cls?' class="'+cls+'"':'')+'>'+nn(suma(arr))+'</td></tr>';
     return s;
   }
   var t='<thead><tr><th>Mes</th>';
-  for(i=0;i<12;i++)t+='<th>'+M[i]+'</th>';
+  for(i=0;i<12;i++)t+='<th'+(i>=8?' class="proj"':'')+'>'+M[i]+'</th>';
   t+='<th>Total año</th></tr></thead><tbody>';
   t+='<tr class="sep"><td colspan="14">Ingresos por renta</td></tr>';
   t+=fila('Tienda 1 · Cañero',T1,'ci');
@@ -528,7 +538,7 @@
   t+='<tr class="sep"><td colspan="14">Abono a Mamá</td></tr>';
   t+=fila('Abono viejita · Tienda 1',MAMA_T1,'cm');
   t+=fila('Abono viejita · Tienda 2',MAMA_T2,'cm');
-  t+=filat('Remuneración Total viejita',MAM,'cm');
+  t+=filat('Abono Total viejita',MAM,'cm');
   t+=filat('Total Alquileres (Tienda 1 + Tienda 2)',ALQ);
   t+='</tbody>';
   document.getElementById('tbl').innerHTML=t;
